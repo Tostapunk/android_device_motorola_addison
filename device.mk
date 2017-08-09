@@ -54,13 +54,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 PRODUCT_AAPT_CONFIG := normal
 
-# Dalvik
-PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.heapgrowthlimit=192m \
-    dalvik.vm.heapsize=384m
-
-$(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-dalvik-heap.mk)
-$(call inherit-product, frameworks/native/build/phone-xxhdpi-3072-hwui-memory.mk)
+# setup dalvik vm configs.
+$(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -272,6 +267,3 @@ PRODUCT_COPY_FILES += \
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 
 PRODUCT_GMS_CLIENTID_BASE := android-motorola
-
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)

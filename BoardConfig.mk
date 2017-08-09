@@ -100,6 +100,20 @@ TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
 USE_OPENGL_RENDERER := true
 
+# Enable dex pre-opt to speed up initial boot
+ifneq ($(TARGET_USES_AOSP),true)
+  ifeq ($(HOST_OS),linux)
+    ifeq ($(WITH_DEXPREOPT),)
+      WITH_DEXPREOPT := false
+      WITH_DEXPREOPT_PIC := false
+      ifneq ($(TARGET_BUILD_VARIANT),user)
+        # Retain classes.dex in APK's for non-user builds
+        DEX_PREOPT_DEFAULT := nostripping
+      endif
+    endif
+  endif
+endif
+
 # Keymaster
 TARGET_PROVIDES_KEYMASTER := true
 
@@ -121,9 +135,6 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 25614597120 # 25014255 * 1024 mmcblk0p54
 # Power
 TARGET_POWERHAL_VARIANT := qcom
 
-# Qualcomm support
-BOARD_USES_QCOM_HARDWARE := true
-
 # Radio
 BOARD_PROVIDES_LIBRIL := true
 BOARD_PROVIDES_RILD := true
@@ -135,7 +146,6 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
 # SELinux
-include device/qcom/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
 
 # Wifi
